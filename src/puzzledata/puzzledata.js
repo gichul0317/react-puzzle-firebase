@@ -1,0 +1,18 @@
+export const puzzleData = [
+  { id: Math.random() * 5, value: '<main>', key: 'main' },
+  { id: Math.random() * 5, value: '</main>', key: 'main' },
+  { id: Math.random() * 5, value: '<section>', key: 'section' },
+  { id: Math.random() * 5, value: '</section>', key: 'section' },
+  { id: Math.random() * 5, value: '<nav>', key: 'nav' },
+  { id: Math.random() * 5, value: '</nav>', key: 'nav' },
+  { id: Math.random() * 5, value: '<footer>', key: 'footer' },
+  { id: Math.random() * 5, value: '</footer>', key: 'footer' },
+  { id: Math.random() * 5, value: '<aside>', key: 'aside' },
+  { id: Math.random() * 5, value: '</aside>', key: 'aside' },
+  { id: Math.random() * 5, value: '<h1>', key: 'h1' },
+  { id: Math.random() * 5, value: '</h1>', key: 'h1' },
+  { id: Math.random() * 5, value: '<p>', key: 'p' },
+  { id: Math.random() * 5, value: '</p>', key: 'p' },
+  { id: Math.random() * 5, value: '<span>', key: 'span' },
+  { id: Math.random() * 5, value: '</span>', key: 'span' },
+];

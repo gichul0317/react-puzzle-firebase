@@ -2,51 +2,76 @@ import React, { useEffect, useState } from 'react';
 import styles from './StartScreen.module.css';
 import { getDatabase, ref, onValue, push } from 'firebase/database';
 import firebase from '../../firebase';
+import GameScreen from '../GameScreen/GameScreen';
 
 function StartScreen(props) {
-  const [test, setTest] = useState([]);
-  const [input, setInput] = useState('');
+  // user information in firebase
+  const [userInfo, setUserInfo] = useState([]);
+  // user name input in the form
+  const [userName, setUserName] = useState('');
+  // check login staus
+  const [login, SetLogin] = useState();
+
+  const database = getDatabase(firebase);
+  const dbRef = ref(database);
 
   useEffect(() => {
-    const database = getDatabase(firebase);
-    const dbRef = ref(database);
     onValue(dbRef, (res) => {
-      console.log(res.val());
       const newArr = [];
       const data = res.val();
-      for (let key in data) {
-        newArr.push({ key: data[key], name: data[key], time: 123 });
+      for (let [id, value] of Object.entries(data)) {
+        const { name, cleartime } = value;
+        newArr.push({ id, name, cleartime });
       }
-      setTest(newArr);
+      setUserInfo(newArr);
     });
-  }, []);
+  }, [dbRef]);
 
   const inputHandler = (e) => {
-    setInput(e.target.value);
+    setUserName(e.target.value);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const database = getDatabase(firebase);
-    const dbRef = ref(database);
-    push(dbRef, input);
-    setInput('');
+    if (userName.trim().length === 0) {
+      SetLogin(false);
+      alert('Please enter valid username');
+      return;
+    }
+    push(dbRef, { name: userName.trim(), cleartime: '' });
+    props.onSubmitted({ name: userName.trim(), cleartime: '' });
+    SetLogin(true);
+    setUserName('');
   };
 
-  const testArr = test.map((item) => {
-    console.log(item);
-  });
-
-  return (
+  let content = (
     <div className={styles.start}>
-      <h1>Let's build html puzzle game with react</h1>
-      <form action="submit" onSubmit={submitHandler}>
-        <label htmlFor="test">Add test value</label>
-        <input type="text" id="test" onChange={inputHandler} value={input} />
-        <button>Submit</button>
+      <h1>HTML Puzzle Game</h1>
+      <form
+        action="submit"
+        onSubmit={submitHandler}
+        className={styles['start__form']}
+      >
+        <label htmlFor="test" className="sr-only">
+          Add test value
+        </label>
+        <input
+          type="text"
+          id="test"
+          onChange={inputHandler}
+          value={userName}
+          placeholder="Enter Your Name"
+        />
+        <button className={styles.button}>Start Game</button>
       </form>
     </div>
   );
+
+  if (login === true) {
+    content = <GameScreen userData={userInfo} />;
+  }
+
+  return content;
 }
 
 export default StartScreen;

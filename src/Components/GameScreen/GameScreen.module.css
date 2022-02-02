@@ -1,19 +1,38 @@
 .game {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  padding: 10px;
+  /* display: flex;
+  flex-direction: column; */
+  /* justify-content: space-around; */
 }
 
 .timer {
-  align-self: flex-end;
+  text-align: end;
+  height: 10%;
+  font-family: var(--heading);
+  font-size: var(--large);
+  font-weight: 400;
 }
 
 .puzzle {
+  margin: 0;
+  width: 100%;
+  height: calc(100% - 10%);
   padding: 0;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
+}
+
+.puzzle li {
+  border: 1px solid var(--grey);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--body);
+  font-size: var(--medium);
+  font-weight: 400;
 }

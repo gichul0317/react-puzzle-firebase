@@ -24,6 +24,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
 }
 
 .puzzle li {
@@ -35,4 +36,6 @@
   font-family: var(--body);
   font-size: var(--medium);
   font-weight: 400;
+  /* background-color: #000; */
+  cursor: pointer;
 }

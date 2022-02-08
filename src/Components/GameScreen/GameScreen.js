@@ -11,25 +11,48 @@ const shuffled = puzzleData
 function GameScreen(props) {
   const [time, setTime] = useState(0);
   const [start, setStart] = useState(false);
+  const [puzzle, setPuzzle] = useState([...shuffled]);
+  const [color, setColor] = useState({});
+  const [element, setElement] = useState({ id: '', key: '' });
 
   const ctx = useContext(UserContext);
 
   useEffect(() => {
-    setStart(true);
+    if (puzzle.length === 0) {
+      setStart(false);
+    } else {
+      setStart(true);
+    }
     let interval = null;
     if (start) {
       interval = setInterval(() => {
         setTime((prevState) => prevState + 10);
       }, 10);
-    } else {
+    } else if (!start) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [start]);
+  }, [start, puzzle.length]);
 
-  const puzzle = shuffled.map((item) => {
-    return <li key={item.id}>{item.value}</li>;
-  });
+  const colorHandler = (id) => {
+    setColor(() => {
+      const init = { ...color };
+      init.id = id;
+      return init;
+    });
+  };
+
+  const filterHandler = (key, id) => {
+    if (element.key === key && element.id !== id) {
+      const updated = puzzle.filter((item) => item.key !== key);
+      setPuzzle(updated);
+      setElement({ key, id });
+      console.log(element.key, element.id);
+    } else {
+      setElement({ key, id });
+      console.log(element.key, element.id);
+    }
+  };
 
   return (
     <div className={styles.game}>
@@ -39,7 +62,22 @@ function GameScreen(props) {
         <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
         <span>{('0' + ((time / 10) % 1000)).slice(-2)}</span>
       </div>
-      <ul className={styles.puzzle}>{puzzle}</ul>
+      <ul className={styles.puzzle}>
+        {puzzle.map((item, i) => {
+          return (
+            <li
+              key={item.id}
+              onClick={() => {
+                colorHandler(item.id);
+                filterHandler(item.key, item.id);
+              }}
+              style={{ backgroundColor: color.id === item.id ? 'white' : null }}
+            >
+              {item.value}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

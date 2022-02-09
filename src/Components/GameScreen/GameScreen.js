@@ -101,7 +101,7 @@ function GameScreen(props) {
   );
 
   if (endgame === true) {
-    content = <EndScreen />;
+    content = <EndScreen userData={props.userData} />;
   }
 
   return content;

@@ -32,8 +32,6 @@ function StartScreen(props) {
     });
   }, [dbRef]);
 
-  console.log(userInfo);
-
   const inputHandler = (e) => {
     setUserName(e.target.value);
   };

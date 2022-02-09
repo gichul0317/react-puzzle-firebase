@@ -14,8 +14,8 @@ function App() {
   return (
     <UserContext.Provider value={userInfo}>
       <main className="App">
-        {/* <StartScreen onSubmitted={handleUserInfo} /> */}
-        <GameScreen />
+        <StartScreen onSubmitted={handleUserInfo} />
+        {/* <GameScreen /> */}
       </main>
     </UserContext.Provider>
   );

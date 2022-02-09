@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './GameScreen.module.css';
 import { puzzleData } from '../../puzzledata/puzzledata';
 import { UserContext } from '../../store/user-context';
+import { getDatabase, ref, update } from 'firebase/database';
+import firebase from '../../firebase';
+import EndScreen from '../EndScreen/EndScreen';
 
 const shuffled = puzzleData
   .map((value) => ({ value, sort: Math.random() }))
@@ -14,15 +17,28 @@ function GameScreen(props) {
   const [puzzle, setPuzzle] = useState([...shuffled]);
   const [color, setColor] = useState({});
   const [element, setElement] = useState({ id: '', key: '' });
+  const [endgame, setEndGame] = useState(false);
 
   const ctx = useContext(UserContext);
+
+  const data = [...props.userData];
+  const newData = data.map((item) => item.id);
+  const childKey = newData[newData.length - 1];
+
+  const database = getDatabase(firebase);
+  const dbRef = ref(database, `/${childKey}`);
+
+  let fullTime = '';
 
   useEffect(() => {
     if (puzzle.length === 0) {
       setStart(false);
+      update(dbRef, { cleartime: fullTime });
+      setEndGame(true);
     } else {
       setStart(true);
     }
+
     let interval = null;
     if (start) {
       interval = setInterval(() => {
@@ -32,7 +48,7 @@ function GameScreen(props) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [start, puzzle.length]);
+  }, [start, puzzle.length, fullTime, dbRef]);
 
   const colorHandler = (id) => {
     setColor(() => {
@@ -47,20 +63,23 @@ function GameScreen(props) {
       const updated = puzzle.filter((item) => item.key !== key);
       setPuzzle(updated);
       setElement({ key, id });
-      console.log(element.key, element.id);
     } else {
       setElement({ key, id });
-      console.log(element.key, element.id);
     }
   };
 
-  return (
+  fullTime = `${('0' + Math.floor((time / 60000) % 60)).slice(-2)}:${(
+    '0' + Math.floor((time / 1000) % 60)
+  ).slice(-2)}:${('0' + ((time / 10) % 1000)).slice(-2)}`;
+
+  let content = (
     <div className={styles.game}>
       <div className={styles.timer}>
         <span>{'Hurry, ' + ctx.name + ' '}</span>
-        <span>{('0' + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-        <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-        <span>{('0' + ((time / 10) % 1000)).slice(-2)}</span>
+        <span>{fullTime}</span>
+        {/* <span>{('0' + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
+    <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+    <span>{('0' + ((time / 10) % 1000)).slice(-2)}</span> */}
       </div>
       <ul className={styles.puzzle}>
         {puzzle.map((item, i) => {
@@ -80,6 +99,12 @@ function GameScreen(props) {
       </ul>
     </div>
   );
+
+  if (endgame === true) {
+    content = <EndScreen />;
+  }
+
+  return content;
 }
 
 export default GameScreen;

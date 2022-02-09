@@ -13,6 +13,11 @@ function StartScreen(props) {
   const [login, SetLogin] = useState();
 
   const database = getDatabase(firebase);
+  // const dbRef = ref(database, `/${userName.trim()}`);
+  // for (let [key, val] of Object.entries(value)) {
+  //   const { cleartime, name } = val;
+  //   newArr.push({ id, key, cleartime, name });
+  // }
   const dbRef = ref(database);
 
   useEffect(() => {
@@ -20,12 +25,14 @@ function StartScreen(props) {
       const newArr = [];
       const data = res.val();
       for (let [id, value] of Object.entries(data)) {
-        const { name, cleartime } = value;
-        newArr.push({ id, name, cleartime });
+        const { cleartime, name } = value;
+        newArr.push({ id, cleartime, name });
       }
       setUserInfo(newArr);
     });
   }, [dbRef]);
+
+  console.log(userInfo);
 
   const inputHandler = (e) => {
     setUserName(e.target.value);
@@ -39,7 +46,7 @@ function StartScreen(props) {
       return;
     }
     push(dbRef, { name: userName.trim(), cleartime: '' });
-    props.onSubmitted({ name: userName.trim(), cleartime: '' });
+    props.onSubmitted({ name: userName.trim() });
     SetLogin(true);
     setUserName('');
   };

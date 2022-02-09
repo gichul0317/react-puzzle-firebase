@@ -36,6 +36,6 @@
   font-family: var(--body);
   font-size: var(--medium);
   font-weight: 400;
-  /* background-color: #000; */
+  background-color: #000;
   cursor: pointer;
 }

@@ -1,0 +1,51 @@
+.end {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+
+.user {
+  text-align: center;
+  /* height: 10%; */
+  font-family: var(--heading);
+  font-size: var(--large);
+  font-weight: 400;
+}
+
+.userlist {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.userlist li {
+  width: 350px;
+  text-align: center;
+  border-bottom: 1px solid;
+  font-family: var(--body);
+  font-size: var(--medium);
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.btnbox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--grey);
+  font-family: var(--body);
+  font-size: var(--medium);
+  font-weight: 400;
+  cursor: pointer;
+}

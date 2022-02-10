@@ -12,13 +12,16 @@ function App() {
     setUserInfo(info);
   };
 
-  const isDesktop = useMatchMedia('(min-width:800px)', true);
+  const isDesktopWidth = useMatchMedia('(min-width:800px)', true);
+  const isDesktopHeight = useMatchMedia('(min-height:800px)', true);
 
   return (
     <UserContext.Provider value={userInfo}>
       <main className="App">
-        {isDesktop && <StartScreen onSubmitted={handleUserInfo} />}
-        {!isDesktop && <MobileScreen />}
+        {isDesktopWidth && isDesktopHeight && (
+          <StartScreen onSubmitted={handleUserInfo} />
+        )}
+        {(!isDesktopWidth || !isDesktopHeight) && <MobileScreen />}
       </main>
     </UserContext.Provider>
   );

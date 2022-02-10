@@ -6,25 +6,35 @@ import { getDatabase, ref, update } from 'firebase/database';
 import firebase from '../../firebase';
 import EndScreen from '../EndScreen/EndScreen';
 
+// shuffle puzzledata array
 const shuffled = puzzleData
   .map((value) => ({ value, sort: Math.random() }))
   .sort((a, b) => a.sort - b.sort)
   .map(({ value }) => value);
 
 function GameScreen(props) {
+  // state for time
   const [time, setTime] = useState(0);
+  // boolean state for time start
   const [start, setStart] = useState(false);
+  // state for shuffled puzzledata
   const [puzzle, setPuzzle] = useState([...shuffled]);
+  // state for css color change
   const [color, setColor] = useState({});
+  // state for clicked element
   const [element, setElement] = useState({ id: '', key: '' });
+  // state for open endscreen
   const [endgame, setEndGame] = useState(false);
 
+  // usecontext
   const ctx = useContext(UserContext);
 
+  // get childkey for firebase
   const data = [...props.userData];
   const newData = data.map((item) => item.id);
   const childKey = newData[newData.length - 1];
 
+  // firebase
   const database = getDatabase(firebase);
   const dbRef = ref(database, `/${childKey}`);
 
@@ -77,9 +87,6 @@ function GameScreen(props) {
       <div className={styles.timer}>
         <span>{'Hurry, ' + ctx.name + ' '}</span>
         <span>{fullTime}</span>
-        {/* <span>{('0' + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-    <span>{('0' + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-    <span>{('0' + ((time / 10) % 1000)).slice(-2)}</span> */}
       </div>
       <ul className={styles.puzzle}>
         {puzzle.map((item, i) => {

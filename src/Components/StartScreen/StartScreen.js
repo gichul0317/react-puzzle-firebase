@@ -12,12 +12,9 @@ function StartScreen(props) {
   // check login staus
   const [login, SetLogin] = useState();
 
+  // firebase
   const database = getDatabase(firebase);
-  // const dbRef = ref(database, `/${userName.trim()}`);
-  // for (let [key, val] of Object.entries(value)) {
-  //   const { cleartime, name } = val;
-  //   newArr.push({ id, key, cleartime, name });
-  // }
+  // firebase
   const dbRef = ref(database);
 
   useEffect(() => {

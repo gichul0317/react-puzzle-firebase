@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from '../../store/user-context';
 import styles from './EndScreen.module.css';
+import { UserContext } from '../../store/user-context';
 import StartScreen from '../StartScreen/StartScreen';
 
 function EndScreen(props) {
+  // state for open startscreen
   const [playAgain, setPlayAgain] = useState(false);
 
+  // usecontext
   const ctx = useContext(UserContext);
 
-  const userData = [...props.userData];
+  // sort players data by cleartime
+  const userData = [...props.userData].filter((item) => item.cleartime !== '');
   const userList = userData.sort((a, b) =>
     a.cleartime > b.cleartime ? 1 : b.cleartime > a.cleartime ? -1 : 0
   );

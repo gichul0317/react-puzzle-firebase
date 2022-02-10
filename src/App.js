@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import StartScreen from './Components/StartScreen/StartScreen';
 import { UserContext } from './store/user-context';
-import GameScreen from './Components/GameScreen/GameScreen';
+import { useMatchMedia } from './usematchmedia/usematchmedia';
+import StartScreen from './Components/StartScreen/StartScreen';
+import MobileScreen from './Components/MobileScreen/MobileScreen';
 
 function App() {
   const [userInfo, setUserInfo] = useState([]);
@@ -11,11 +12,13 @@ function App() {
     setUserInfo(info);
   };
 
+  const isDesktop = useMatchMedia('(min-width:800px)', true);
+
   return (
     <UserContext.Provider value={userInfo}>
       <main className="App">
-        <StartScreen onSubmitted={handleUserInfo} />
-        {/* <GameScreen /> */}
+        {isDesktop && <StartScreen onSubmitted={handleUserInfo} />}
+        {!isDesktop && <MobileScreen />}
       </main>
     </UserContext.Provider>
   );

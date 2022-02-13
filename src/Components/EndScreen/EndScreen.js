@@ -1,12 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './EndScreen.module.css';
 import { UserContext } from '../../store/user-context';
-import StartScreen from '../StartScreen/StartScreen';
 
 function EndScreen(props) {
-  // state for open startscreen
-  const [playAgain, setPlayAgain] = useState(false);
-
   // usecontext
   const ctx = useContext(UserContext);
 
@@ -16,10 +12,11 @@ function EndScreen(props) {
     a.cleartime > b.cleartime ? 1 : b.cleartime > a.cleartime ? -1 : 0
   );
 
-  let content = (
+  return (
     <div className={styles.end}>
       <div className={styles.user}>
-        <span>{ctx.name}, check your score</span>
+        <p>{ctx.name}, thanks for playing</p>
+        <p>check your score</p>
       </div>
       <ul className={styles.userlist}>
         {userList.map((item) => {
@@ -31,17 +28,8 @@ function EndScreen(props) {
           );
         })}
       </ul>
-      <div className={styles.btnbox}>
-        <button onClick={() => setPlayAgain(true)}>Play Again</button>
-      </div>
     </div>
   );
-
-  if (playAgain === true) {
-    content = <StartScreen />;
-  }
-
-  return content;
 }
 
 export default EndScreen;

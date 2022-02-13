@@ -8,7 +8,7 @@
   text-align: center;
 }
 
-p {
+.mobile p {
   font-family: var(--heading);
   font-size: var(--regular);
   font-weight: 700;

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from './StartScreen.module.css';
-import { getDatabase, ref, onValue, push } from 'firebase/database';
+import { getDatabase, ref, onValue } from 'firebase/database';
 import firebase from '../../firebase';
 import GameScreen from '../GameScreen/GameScreen';
+import EndScreen from '../EndScreen/EndScreen';
 
 function StartScreen(props) {
   // user information in firebase
   const [userInfo, setUserInfo] = useState([]);
   // user name input in the form
   const [userName, setUserName] = useState('');
-  // check login staus
-  const [login, SetLogin] = useState();
+  // current screen state
+  const [screenMode, setScreenMode] = useState('start');
 
   // firebase
   const database = getDatabase(firebase);
@@ -20,7 +21,7 @@ function StartScreen(props) {
   useEffect(() => {
     onValue(dbRef, (res) => {
       const newArr = [];
-      const data = res.val();
+      const data = res.val() || {};
       for (let [id, value] of Object.entries(data)) {
         const { cleartime, name } = value;
         newArr.push({ id, cleartime, name });
@@ -36,14 +37,22 @@ function StartScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     if (userName.trim().length === 0) {
-      SetLogin(false);
       alert('Please enter valid username');
       return;
     }
-    push(dbRef, { name: userName.trim(), cleartime: '' });
     props.onSubmitted({ name: userName.trim() });
-    SetLogin(true);
+    setScreenMode('game');
     setUserName('');
+  };
+
+  const playAgainHandler = () => {
+    setScreenMode('start');
+    props.onSubmitted({ name: '' });
+  };
+
+  const scoresHandler = () => {
+    setScreenMode('scores');
+    props.onSubmitted({ name: '' });
   };
 
   let content = (
@@ -66,11 +75,24 @@ function StartScreen(props) {
         />
         <button className={styles.button}>Start Game</button>
       </form>
+      <button
+        type="button"
+        className={`${styles.button} ${styles.scoreButton}`}
+        onClick={scoresHandler}
+      >
+        See Scores
+      </button>
     </div>
   );
 
-  if (login === true) {
-    content = <GameScreen userData={userInfo} />;
+  if (screenMode === 'game') {
+    content = (
+      <GameScreen userData={userInfo} onPlayAgain={playAgainHandler} />
+    );
+  }
+
+  if (screenMode === 'scores') {
+    content = <EndScreen userData={userInfo} onPlayAgain={playAgainHandler} />;
   }
 
   return content;

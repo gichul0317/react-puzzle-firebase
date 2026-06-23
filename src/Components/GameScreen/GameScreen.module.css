@@ -37,5 +37,35 @@
   font-size: var(--medium);
   font-weight: 400;
   background-color: #000;
+  color: transparent;
   cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, opacity 180ms ease;
+  user-select: none;
+}
+
+.puzzle li.selected,
+.puzzle li.matched {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.puzzle li.matched {
+  animation: matchBlink 600ms ease-in-out;
+}
+
+.puzzle li.removed {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes matchBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  35%,
+  70% {
+    opacity: 0.2;
+  }
 }

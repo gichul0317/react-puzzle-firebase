@@ -1,70 +1,92 @@
-# Getting Started with Create React App
+# HTML Puzzle Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+HTML semantic tag pairs을 맞추는 React 퍼즐 게임입니다. 사용자가 이름을 입력하고 게임을 시작하면 HTML 태그 카드들이 랜덤하게 배치되고, 같은 태그의 여는/닫는 카드를 맞추면 잠깐 공개된 뒤 사라집니다.
 
-## Available Scripts
+Live page: https://gichul0317.github.io/react-puzzle-firebase/
 
-In the project directory, you can run:
+## 주요 기능
 
-### `npm start`
+- 사용자 이름 입력 후 게임 시작
+- 매 게임마다 퍼즐 카드 랜덤 배치
+- 매칭된 카드의 태그 값을 잠깐 보여준 뒤 깜빡이며 제거
+- 제거된 카드 자리 유지
+- 게임 완료 후에만 Firebase Realtime Database에 점수 저장
+- 시작 화면에서 `See Scores`로 완료된 사용자 점수 확인
+- `Play Again`으로 시작 화면 복귀
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React 17
+- Vite
+- Vitest
+- Firebase Realtime Database
+- GitHub Pages
 
-### `npm test`
+## 로컬 실행
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm run start
+```
 
-### `npm run build`
+Vite dev server가 실행되면 보통 아래 주소에서 확인할 수 있습니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```text
+http://localhost:5173/react-puzzle-firebase/
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+이미 `5173` 포트가 사용 중이면 Vite가 다른 포트를 자동으로 안내합니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 환경 변수
 
-### `npm run eject`
+Firebase 설정은 `.env.local`에 `VITE_` prefix로 넣어야 합니다. `.env.local`은 git에 커밋하지 않습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+VITE_API_KEY=...
+VITE_AUTH_DOMAIN=...
+VITE_PROJECT_ID=...
+VITE_STORAGE_BUCKET=...
+VITE_MESSAGING_SENDER_ID=...
+VITE_APP_ID=...
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Scripts
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm run start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Vite 개발 서버를 실행합니다.
 
-## Learn More
+```bash
+npm test
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Vitest 테스트를 실행합니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run build
+```
 
-### Code Splitting
+프로덕션 빌드를 `dist/` 폴더에 생성합니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run deploy
+```
 
-### Analyzing the Bundle Size
+`dist/` 빌드 결과를 `gh-pages` 브랜치로 배포합니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 배포 순서
 
-### Making a Progressive Web App
+소스 브랜치와 라이브 페이지 상태가 어긋나지 않도록 아래 순서를 권장합니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm test
+npm run build
+git add .
+git commit -m "Update puzzle game"
+git push origin build
+npm run deploy
+```
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`npm run deploy`는 `predeploy`로 `npm run build`를 먼저 실행한 뒤, `gh-pages -d dist`로 GitHub Pages 브랜치에 배포합니다.

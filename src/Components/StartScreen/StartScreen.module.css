@@ -46,3 +46,9 @@
   font-weight: 400;
   cursor: pointer;
 }
+
+.scoreButton {
+  margin-top: 12px;
+  border: 1px solid var(--grey);
+  background-color: var(--white);
+}

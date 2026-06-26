@@ -13,12 +13,12 @@ vi.mock('./firebase', () => ({
   default: {},
 }));
 
-vi.mock('./usematchmedia/usematchmedia', () => ({
-  useMatchMedia: vi.fn(() => false),
-}));
-
-test('renders the small screen fallback in the test viewport', () => {
+test('renders the game start screen in the small test viewport', () => {
   render(<App />);
-  const message = screen.getByText(/mobile or small screen not available/i);
-  expect(message).toBeInTheDocument();
+  expect(
+    screen.queryByText(/mobile or small screen not available/i)
+  ).not.toBeInTheDocument();
+  expect(
+    screen.getByRole('heading', { name: /html puzzle game/i })
+  ).toBeInTheDocument();
 });
